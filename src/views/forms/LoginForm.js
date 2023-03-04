@@ -2,34 +2,51 @@ import SEO from "../../components/seo";
 import React, { useState, useEffect } from "react";
 import { Button, Card, FilledInput, Grid, Typography } from "@mui/material";
 import axios from "axios";
-// import cookies from "react-cookies";
+import {useCookies} from "react-cookie";
 
 export default function Clinics() {
-  const [data, setData] = useState({});
-  const [message, setMessage] = useState("");
+    const [message,setMessage] = useState();
+    const [cred, setCred] = useState({
+        email: "",
+        password: ""
+    }); 
 
-    const handleSubmit = ({target}) => {
+    const [storeData,setStoreData] = useState(null);
+
+    const [cookies, setCookies] = useCookies(['clinic_id','clinic_token']);
+    
+    const handleChange = (event) => {
+        const {name,value} = event.target;
+        setCred((prev) => {
+          return {...prev,[name]:value}
+        })
+    }
+
+    const handleSubmit = (event) => {
+        // event.preventDefault()
         axios
         .request({
           url: `${process.env.REACT_APP_API_URL}/api/clinic_login`,
           method: 'POST',
           data: {
-              email: target.email.value,
-              password: target.password.value
+              email: cred['email'],
+              password: cred['password']
           }
         })
         .then((response) => {
-          setData(response.data)
+        //   setStoreData(response['data'])
+        
+          setCookies('clinic_id', response['data'])
         })
         .catch((error) => {
-            setMessage(error.message)
+            setMessage(error)
         });
     }
 
 
   useEffect(() => {
    
-  });
+  },[]);
 
   return (
     <div>
@@ -57,13 +74,12 @@ export default function Clinics() {
             marginTop={6}
             rowSpacing={5}
             sx={{ textAlign: "center", display: "grid" }}
-            xs={12}
           >
             <Grid item>
-              <FilledInput type="text" placeholder="Email" name="email" ></FilledInput>
+              <FilledInput type="text" placeholder="Email" name="email" onChange={handleChange} value={cred.email || ''} ></FilledInput>
             </Grid>
             <Grid item>
-              <FilledInput type="password" placeholder="password" name="password" ></FilledInput>
+              <FilledInput type="password" placeholder="password" name="password" onChange={handleChange} value={cred['password'] || ""} ></FilledInput>
             </Grid>
             <Grid item>
               <Button variant="contained" color="success" type="submit" >
