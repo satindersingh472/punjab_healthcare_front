@@ -10,9 +10,6 @@ export default function Clinics() {
         email: "",
         password: ""
     }); 
-
-    const [storeData,setStoreData] = useState(null);
-
     const [cookies, setCookies] = useCookies(['clinic_id','clinic_token']);
     
     const handleChange = (event) => {
@@ -23,7 +20,7 @@ export default function Clinics() {
     }
 
     const handleSubmit = (event) => {
-        // event.preventDefault()
+        event.preventDefault()
         axios
         .request({
           url: `${process.env.REACT_APP_API_URL}/api/clinic_login`,
@@ -34,9 +31,8 @@ export default function Clinics() {
           }
         })
         .then((response) => {
-        //   setStoreData(response['data'])
-        
-          setCookies('clinic_id', response['data'])
+          setCookies('clinic_id', response['data']['clinic_id']);
+          setCookies('clinic_token',response['data']['clinic_token'])
         })
         .catch((error) => {
             setMessage(error)
