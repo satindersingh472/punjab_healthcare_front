@@ -1,6 +1,5 @@
 import { BrowserRouter,Routes,Route } from "react-router-dom"
-import Clinics from "./views/clinics/clinics"
-import Homepage from "./views/clinics/Homepage"
+import LoginForm from './views/forms/LoginForm'
 
 
 export default function App(){
@@ -8,8 +7,7 @@ export default function App(){
     <BrowserRouter>
     <div className="app">
       <Routes>
-        <Route path='/' element={<Homepage/>}/>
-        <Route path='/clinics' element={<Clinics/>}/>
+        <Route path='/' element={<LoginForm/>}/>
       </Routes>
     </div>
     </BrowserRouter>
