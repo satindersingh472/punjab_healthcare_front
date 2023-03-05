@@ -1,15 +1,16 @@
 import SEO from "../../components/seo";
-import { Button, Card, FilledInput, Grid, Typography } from "@mui/material";
-import React, { useState } from "react";
+import { Button, Card, FilledInput, Grid, Typography} from "@mui/material";
+import React, { useEffect, useState, useRef } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { textAlign } from "@mui/system";
+import { Link } from "react-router-dom";
 
 export function Register() {
+  const formRef = useRef(null);
   const [cred, setCred] = useState({});
-  const [data,setData] = useState();
-  const [error,setError] = useState("");
-  const [cookies, setCookies] = useCookies([]);
+  const [data, setData] = useState();
+  const [error, setError] = useState();
+  const [cookies, setCookies] = useCookies(['clinic_id','clinic_token']);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -24,30 +25,33 @@ export function Register() {
     axios
       .request({
         url: `${process.env.REACT_APP_API_URL}/api/clinic`,
-        method: 'POST',
-        data:{
-            'city': cred['city'],
-            'email': cred['email'],
-            'name': cred['name'],
-            'password': cred['password'],
-            'registration_number': cred['registration_number'],
-            'state': cred['state']
-        }
+        method: "POST",
+        data: {
+          city: cred["city"],
+          email: cred["email"],
+          name: cred["name"],
+          password: cred["password"],
+          registration_number: cred["registration_number"],
+          state: cred["state"],
+        },
       })
       .then((response) => {
-        setData(response['data']);
-        console.log(data)
+        setData(response["data"]);
+        setCookies('clinic_id',data['clinic_id'])
+        setCookies('clinic_token',data['clinic_token'])
+        formRef.current.reset();
       })
       .catch((error) => {
-        setError(error['response']['data']);
+        setError(error["response"]["data"]);
+        formRef.current.reset();
         setTimeout(() => {
-            setError('')
+          setError("");
         }, 3000);
       });
   };
 
   return (
-    <div style={{textAlign:'center'}} >
+    <div style={{ textAlign: "center" }}>
       <SEO
         title="Register Healthcare"
         description="Register form for an eHealth Care"
@@ -57,7 +61,7 @@ export function Register() {
       <Card
         raised
         sx={{
-          bgcolor: "#FCF7D0 ",
+          bgcolor: '#FFF5EB',
           width: "400px",
           margin: "30px auto",
         }}
@@ -68,7 +72,7 @@ export function Register() {
         <Typography variant="body2" align="center">
           Register your Clinic
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} ref={formRef}>
           <Grid
             container
             marginTop={3}
@@ -124,14 +128,22 @@ export function Register() {
               ></FilledInput>
             </Grid>
             <Grid>
-              <Button type="submit" variant="contained" sx={{ margin: "10px" }}>
+              <Button type="submit" variant="contained" color="success" sx={{ margin: "10px" }}>
                 Submit
               </Button>
+            </Grid>
+            <Grid item>
+                <Typography>
+                    Go to {" "}
+                    <Link to="/">
+                        Login
+                    </Link>
+                </Typography>
             </Grid>
           </Grid>
         </form>
       </Card>
-      {error === '' ? null : <p>{error}</p>}
+      {error === "" ? null : <p>{error}</p>}
     </div>
   );
 }

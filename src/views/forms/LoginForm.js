@@ -1,12 +1,15 @@
 import SEO from "../../components/seo";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { Button, Card, FilledInput, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import {useCookies} from "react-cookie";
 import { Link } from "react-router-dom";
+import {useForm} from 'react-hook-form'
 
 export default function Clinics() {
+    const {formRef} = useRef(null);
     const [message,setMessage] = useState();
+    const [data,setData] = useState();
     const [cred, setCred] = useState({
         email: "",
         password: ""
@@ -32,11 +35,17 @@ export default function Clinics() {
           }
         })
         .then((response) => {
-          setCookies('clinic_id', response['data']['clinic_id']);
-          setCookies('clinic_token',response['data']['clinic_token'])
+          setData(response['data'])
+          setCookies('clinic_id' , data['clinic_id'])
+          setCookies('clinic_token' , data['clinic_token'])
+          formRef.current.reset();
         })
         .catch((error) => {
-            setMessage(error)
+            setMessage(error['response']['data'])
+            formRef.current.reset();
+            setTimeout(() => {
+                setMessage('')
+            }, 3000);
         });
     }
 
@@ -56,16 +65,16 @@ export default function Clinics() {
       <Card
         raised
         sx={{
-          bgcolor: "#FCF7D0 ",
-          height: "500px",
+          bgcolor:'#FFF5EB',
           width: "400px",
           margin: "30px auto",
+          textAlign:'center'
         }}
       >
         <Typography variant="h4" align="center" marginTop="20px">
           eHealth Care
         </Typography>
-        <form onSubmit={handleSubmit} >
+        <form onSubmit={handleSubmit} ref={formRef} >
           <Grid
             container
             marginTop={6}
@@ -89,11 +98,11 @@ export default function Clinics() {
                 <Link to="/register">
                     Register
                 </Link>
-                {!message ? null : <p>{message}</p> }
               </Typography>
             </Grid>
           </Grid>
         </form>
+        {message === '' ? null : <p>{message}</p>}
       </Card>
     </div>
   );
