@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Card, FilledInput, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import {useCookies} from "react-cookie";
+import { Link } from "react-router-dom";
 
 export default function Clinics() {
     const [message,setMessage] = useState();
@@ -55,9 +56,9 @@ export default function Clinics() {
       <Card
         raised
         sx={{
-          bgcolor: "#E1EEDD",
+          bgcolor: "#FCF7D0 ",
           height: "500px",
-          minWidth: "400px",
+          width: "400px",
           margin: "30px auto",
         }}
       >
@@ -85,9 +86,9 @@ export default function Clinics() {
             <Grid item>
               <Typography variant="body2">
                 Don't have an Account?{" "}
-                <Button variant="contained" size="small">
-                  Register
-                </Button>
+                <Link to="/register">
+                    Register
+                </Link>
                 {!message ? null : <p>{message}</p> }
               </Typography>
             </Grid>
