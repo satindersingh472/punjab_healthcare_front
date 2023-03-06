@@ -1,16 +1,15 @@
 import SEO from "../../components/seo";
 import { Button, Card, FilledInput, Grid, Typography} from "@mui/material";
-import React, { useEffect, useState, useRef } from "react";
-import { useCookies } from "react-cookie";
+import React, {useState, useRef } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Cookies from 'js-cookie'
 
 export function Register() {
   const formRef = useRef(null);
   const [cred, setCred] = useState({});
   const [data, setData] = useState();
   const [error, setError] = useState();
-  const [cookies, setCookies] = useCookies(['clinic_id','clinic_token']);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -37,8 +36,8 @@ export function Register() {
       })
       .then((response) => {
         setData(response["data"]);
-        setCookies('clinic_id',data['clinic_id'])
-        setCookies('clinic_token',data['clinic_token'])
+        Cookies.set('clinic_id',data['clinic_id'])
+        Cookies.set('clinic_token',data['clinic_token'])
         formRef.current.reset();
       })
       .catch((error) => {
