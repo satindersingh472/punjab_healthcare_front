@@ -3,17 +3,17 @@ import React, { useState } from "react";
 import { Button, Card, FilledInput, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 // default function
 export default function LoginForm() {
+  const navigate = useNavigate();
   // use react-hook-form for forms inputs
   const { register, handleSubmit, reset } = useForm();
   // use message hook for showing any error message
   const [message, setMessage] = useState();
 
-  const [isCookies,setIsCookies] = useState();
 
 
   // will handle the api request with handle submit function from useform hook
@@ -30,9 +30,11 @@ export default function LoginForm() {
         },
       })
       .then((response) => {
+        navigate('/authenticate')
         Cookies.set("clinic_id", response["data"]["clinic_id"]);
         Cookies.set("clinic_token", response["data"]["clinic_token"]);
         reset();
+       
       })
       .catch((error) => {
         setMessage(error["response"]["data"]);

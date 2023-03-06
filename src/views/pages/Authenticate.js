@@ -2,16 +2,16 @@ import LoginForm from "../forms/LoginForm";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
-
+import { useNavigate } from "react-router-dom";
 export default function Authenticate() {
+    const navigate = useNavigate()
   const [isCookies, setIsCookies] = useState();
 
   useEffect(() => {
     if (Cookies.get("clinic_token") === undefined) {
       setIsCookies(false);
-    } else {
-      setIsCookies(true);
-    }
+        navigate('/')
+    } 
   }, [isCookies]);
 
   const handleLogout = () => {
