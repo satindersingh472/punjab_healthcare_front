@@ -1,24 +1,18 @@
 import SEO from "../../components/seo";
 import { Button, Card, FilledInput, Grid, Typography} from "@mui/material";
-import React, {useState, useRef } from "react";
+import React, {useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie'
+import {useForm} from 'react-hook-form';
 
 export function Register() {
-  const formRef = useRef(null);
-  const [cred, setCred] = useState({});
-  const [data, setData] = useState();
+  const navigate = useNavigate();
+  const {register,handleSubmit,reset} = useForm()
   const [error, setError] = useState();
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setCred((prev) => {
-      return { ...prev, [name]: value };
-    });
-  };
 
-  const handleSubmit = (event) => {
+  const onSubmit = (data,event) => {
     event.preventDefault();
 
     axios
@@ -26,23 +20,23 @@ export function Register() {
         url: `${process.env.REACT_APP_API_URL}/api/clinic`,
         method: "POST",
         data: {
-          city: cred["city"],
-          email: cred["email"],
-          name: cred["name"],
-          password: cred["password"],
-          registration_number: cred["registration_number"],
-          state: cred["state"],
+          city: data["city"],
+          email: data["email"],
+          name: data["name"],
+          password: data["password"],
+          registration_number: data["registration_number"],
+          state: data["state"],
         },
       })
       .then((response) => {
-        setData(response["data"]);
-        Cookies.set('clinic_id',data['clinic_id'])
-        Cookies.set('clinic_token',data['clinic_token'])
-        formRef.current.reset();
+        Cookies.set('clinic_id',response['data']['clinic_id'])
+        Cookies.set('clinic_token',response['data']['clinic_token'])
+        reset();
+        navigate('/authenticate')
       })
       .catch((error) => {
         setError(error["response"]["data"]);
-        formRef.current.reset();
+        reset();
         setTimeout(() => {
           setError("");
         }, 3000);
@@ -71,7 +65,7 @@ export function Register() {
         <Typography variant="body2" align="center">
           Register your Clinic
         </Typography>
-        <form onSubmit={handleSubmit} ref={formRef}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Grid
             container
             marginTop={3}
@@ -80,50 +74,41 @@ export function Register() {
           >
             <Grid item>
               <FilledInput
-                type="text"
-                name="name"
-                placeholder="Name"
-                onChange={handleChange}
-              ></FilledInput>
+                {...register('name')}
+                placeholder="Name"              ></FilledInput>
             </Grid>
             <Grid item>
               <FilledInput
-                type="text"
-                name="registration_number"
                 placeholder="Registration Number"
-                onChange={handleChange}
+                {...register('registration_number')}
               ></FilledInput>
             </Grid>
             <Grid item>
               <FilledInput
-                type="text"
-                name="city"
                 placeholder="City"
-                onChange={handleChange}
+                {...register('city')}
               ></FilledInput>
             </Grid>
             <Grid item>
               <FilledInput
-                type="text"
-                name="state"
+                
                 placeholder="State"
-                onChange={handleChange}
+                {...register('state')}
               ></FilledInput>
             </Grid>
             <Grid item>
               <FilledInput
                 type="email"
-                name="email"
                 placeholder="Email"
-                onChange={handleChange}
+                {...register('email')}
               ></FilledInput>
             </Grid>
             <Grid item>
               <FilledInput
                 type="password"
-                name="password"
+                {...register('password')}
                 placeholder="Password"
-                onChange={handleChange}
+            
               ></FilledInput>
             </Grid>
             <Grid>
