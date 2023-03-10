@@ -30,7 +30,7 @@ export default function LoginForm() {
         },
       })
       .then((response) => {
-        navigate('/authenticate')
+        navigate('/patientsummary')
         Cookies.set("clinic_id", response["data"]["clinic_id"]);
         Cookies.set("clinic_token", response["data"]["clinic_token"]);
         reset();

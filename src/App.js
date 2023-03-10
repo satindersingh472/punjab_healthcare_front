@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginForm from "./views/forms/LoginForm";
 import { Register } from "./views/forms/RegisterForm";
 import { ScopedCssBaseline } from "@mui/material";
-import Authenticate from './views/pages/Authenticate'
+import PatientsSummary from "./views/pages/PatientsSummary";
 
 export default function App() {
   return (
@@ -11,7 +11,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<LoginForm />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/authenticate" element={<Authenticate/>}/>
+          <Route path="/patientsummary" element={<PatientsSummary/>}/>
         </Routes>
       </BrowserRouter>
     </ScopedCssBaseline>

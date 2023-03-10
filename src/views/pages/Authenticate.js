@@ -1,34 +1,18 @@
-import LoginForm from "../forms/LoginForm";
-import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
-import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-export default function Authenticate() {
-    const navigate = useNavigate()
-  const [isCookies, setIsCookies] = useState();
+import Cookies from 'js-cookie'
+import {useState,useEffect} from 'react'
 
-  useEffect(() => {
-    if (Cookies.get("clinic_token") === undefined) {
-      setIsCookies(false);
-        navigate('/')
-    } 
-  }, [isCookies]);
+export function Authenicated(){
+  const [isLoggedIn, setIsLoggedIn] = useState();
+  
 
-  const handleLogout = () => {
-    Cookies.remove("clinic_token");
-    setIsCookies(false)
-  };
 
-  return (
-    <>
-      {isCookies === false ? (
-        <LoginForm />
-      ) : (
-        <div>
-          <p>HEllo</p>
-          <Button onClick={handleLogout}>delete cookies</Button>
-        </div>
-      )}
-    </>
-  );
+  useEffect(()=>{
+    const token = Cookies.get('clinic_token')
+    if(token){  
+      setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false)
+  }
+},[])
+return isLoggedIn;
 }
