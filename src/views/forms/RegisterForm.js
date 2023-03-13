@@ -32,7 +32,7 @@ export function Register() {
         Cookies.set('clinic_id',response['data']['clinic_id'])
         Cookies.set('clinic_token',response['data']['clinic_token'])
         reset();
-        navigate('/authenticate')
+        navigate('/patientsummary')
       })
       .catch((error) => {
         setError(error["response"]["data"]);

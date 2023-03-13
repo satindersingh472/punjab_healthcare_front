@@ -1,19 +1,27 @@
 import SEO from "../../components/seo";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, FilledInput, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Link,useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { useForm } from "react-hook-form";
+import PatientsSummary from "../pages/PatientsSummary";
 
 // default function
 export default function LoginForm() {
-  const navigate = useNavigate();
+  const [isLogged,setIsLogged] = useState(false);
   // use react-hook-form for forms inputs
   const { register, handleSubmit, reset } = useForm();
   // use message hook for showing any error message
   const [message, setMessage] = useState();
 
+
+  useEffect(()=>{
+    const token = Cookies.get('clinic_token')
+    if(token){
+      setIsLogged(true)
+    }
+  },[setIsLogged])
 
 
   // will handle the api request with handle submit function from useform hook
@@ -30,7 +38,7 @@ export default function LoginForm() {
         },
       })
       .then((response) => {
-        navigate('/patientsummary')
+        setIsLogged(true)
         Cookies.set("clinic_id", response["data"]["clinic_id"]);
         Cookies.set("clinic_token", response["data"]["clinic_token"]);
         reset();
@@ -45,8 +53,12 @@ export default function LoginForm() {
       });
   };
 
+
+
+
   return (
-    <div>
+   <>
+   {isLogged ? (<PatientsSummary/>) :  <div>
       <SEO
         title="Login Healthcare"
         description="Login form an eHealth Care"
@@ -99,6 +111,10 @@ export default function LoginForm() {
         </form>
         {message === "" ? null : <p>{message}</p>}
       </Card>
-    </div>
+    </div>}
+   
+   </>
+
+
   );
 }
