@@ -2,6 +2,7 @@ import React,{ useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { Button } from "@mui/material";
 import LoginForm from "../forms/LoginForm";
+import PreviosRecords from "./PreviousRecords";
 
 export default function PatientsSummary() {
   const [isLogged, setIsLogged] = useState();
@@ -19,7 +20,7 @@ const logout = ()=>{
 
   return (
     <div>
-        {isLogged !== undefined ? (<><p>Hello....your token is ______ {isLogged} </p>
+        {isLogged !== undefined ? (<><PreviosRecords/>
         
         <Button variant="contained" onClick={logout}>Logout</Button>
         
