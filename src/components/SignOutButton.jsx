@@ -1,5 +1,4 @@
 import { useMsal } from '@azure/msal-react'
-import { AppBar } from '@mui/material'
 import {Button} from '@mui/material'
 
 export const SignOutButton = () => {
@@ -14,9 +13,9 @@ export const SignOutButton = () => {
 
   return (
     <>
-      <AppBar>
-        <Button variant="contained" onClick={handleLogout} >Sign Out</Button>
-      </AppBar>
+     
+        <Button sx={{margin:"10px"}} variant="contained" color='warning'  onClick={handleLogout} >Sign Out</Button>
+   
     </>
   )
 }

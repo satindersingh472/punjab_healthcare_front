@@ -1,17 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { ScopedCssBaseline } from "@mui/material";
-import { PageLayout } from "./components/PageLayout";
+import { CssBaseline } from "@mui/material";
+import { HomePage } from "./views/Homepage";
 
 
 export default function App() {
   return (
-    <ScopedCssBaseline>
+    <CssBaseline>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<PageLayout/>}/>
+          <Route path="/" element={<HomePage/>}/>
         </Routes>
       </BrowserRouter>
-    </ScopedCssBaseline>
+    </CssBaseline>
   );
 }

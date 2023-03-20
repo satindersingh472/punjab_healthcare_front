@@ -17,6 +17,6 @@ export const SignInButton = () => {
         }
     }
     return (
-        <Button variant="contained" className="ml-auto" onClick={() => handleLogin("popup")}>Sign in</Button>
+        <Button sx={{margin:"10px"}} variant="contained" color="success" onClick={() => handleLogin("popup")}>Sign in</Button>
     );
 }
