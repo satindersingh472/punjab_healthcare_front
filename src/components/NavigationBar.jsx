@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBar, Toolbar } from "@mui/material";
+import { AppBar, Toolbar} from "@mui/material";
 import { useIsAuthenticated } from "@azure/msal-react";
 import { SignInButton } from "./SignInButton";
 import { SignOutButton } from "./SignOutButton";
@@ -12,8 +12,9 @@ export const NavigationBar = (props) => {
 
     return (
         <>
-            <AppBar sx={{display:'grid',justifyItems:'end'}} >
+            <AppBar sx={{display:'grid',justifyItems:'end'}} elevation="10" >
             <Toolbar>
+        
             { isAuthenticated ? <SignOutButton/> : <SignInButton /> }
             </Toolbar>
             </AppBar>
